@@ -1,0 +1,7 @@
+table {
+    width: 300px;
+    margin: 30px 40px;
+}
+.table-hover tr:hover td, .table-hover tr:hover th {
+  background-color: greenyellow;
+}

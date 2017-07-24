@@ -1,0 +1,11 @@
+{
+  "name": "angular-quickstart",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Ruslan Yakovlev <yrgbel@gmail.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "index.html"
+}
