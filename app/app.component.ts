@@ -35,7 +35,7 @@ export class AppComponent {
 
    onChangeCategory(category: string)
    {
-     
+      this.myTable.setProductCategory(category);
    }
 
  } // Класс определяющий поведение компонента

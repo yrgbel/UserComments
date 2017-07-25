@@ -59,9 +59,14 @@ export class MyTableComponent {
         return this.myTableService.getUniqueProductCategories();
     }
 
-    getProductsByCategory(category: string): Product[]
+    setProductCategory(category: string): void
     {
-         return this.myTableService.getUniqueProductsByCategory(category);
+        this.myTableService.setProductCategory(category);
+    }
+    
+    private getCurrentCountProduct(): number
+    {
+        return this.myTableService.CountRequestedProduct;
     }
 
     private getColorFontExceedLimitPrice(currentPrice: number, limitPrice: number = 500)

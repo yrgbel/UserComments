@@ -38,6 +38,7 @@ var AppComponent = (function () {
         console.log("Row with ID=" + id + " has been deleted.");
     };
     AppComponent.prototype.onChangeCategory = function (category) {
+        this.myTable.setProductCategory(category);
     };
     return AppComponent;
 }()); // Класс определяющий поведение компонента

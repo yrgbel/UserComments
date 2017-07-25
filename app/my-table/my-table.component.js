@@ -55,8 +55,11 @@ var MyTableComponent = (function () {
     MyTableComponent.prototype.getCategories = function () {
         return this.myTableService.getUniqueProductCategories();
     };
-    MyTableComponent.prototype.getProductsByCategory = function (category) {
-        return this.myTableService.getUniqueProductsByCategory(category);
+    MyTableComponent.prototype.setProductCategory = function (category) {
+        this.myTableService.setProductCategory(category);
+    };
+    MyTableComponent.prototype.getCurrentCountProduct = function () {
+        return this.myTableService.CountRequestedProduct;
     };
     MyTableComponent.prototype.getColorFontExceedLimitPrice = function (currentPrice, limitPrice) {
         if (limitPrice === void 0) { limitPrice = 500; }

@@ -1,6 +1,9 @@
+import { Injectable } from '@angular/core';
 import { Product } from "./Product";
 import { asEnumerable } from 'linq-es2015';
 
+
+@Injectable()
 export class MyTableService {
 
     private readonly products: Product[] =
@@ -15,18 +18,43 @@ export class MyTableService {
     { id: 9, name: "product 9", price: 900, category: "Category 3" },
     { id: 10, name: "product 10", price: 1000, category: "Category 3" }];
 
-    GetProducts(count = this.products.length): Product[] {
-        return this.products.slice(0, count);
+    readonly allCategories: string = "All Products";
+    private isFilterCategoryEnabled: boolean = false;
+    private currentSelectedCategory: string;
+    private countRequestedProduct: number;
+
+    GetProducts(count = this.products.length): Product[]
+     {
+         let productsItems: Product[] = [];
+
+        if(this.isFilterCategoryEnabled)
+        {
+             productsItems = asEnumerable(this.products)
+        .Where(p => p.category == this.currentSelectedCategory)
+        .ToArray().slice(0, count)
+        }
+        else{
+            productsItems = this.products.slice(0, count)
+        }
+
+        this.countRequestedProduct = productsItems.length;
+
+        return productsItems;
     }
 
     getUniqueProductCategories(): string[]
     {
-         return asEnumerable(this.products).Select(p => p.category).Distinct().ToArray();
+        let categories: string[] = asEnumerable(this.products).Select(p => p.category).Distinct()
+         .OrderBy(p => p).ToArray();
+         categories.unshift(this.allCategories)
+
+         return categories;
     }
 
-     getUniqueProductsByCategory(category: string): Product[]
+     setProductCategory(category: string)
     {
-         return asEnumerable(this.products).Where(p => p.category == category).ToArray();
+        this.currentSelectedCategory = category;
+        this.isFilterCategoryEnabled = category !== this.allCategories;
     }
 
     deleteById(id: number): void
@@ -40,9 +68,14 @@ export class MyTableService {
             }
         }
     }
-
+    
     get CountAllProducts() : number
     {
         return this.products.length;
+    }
+
+    get CountRequestedProduct(): number
+    {
+        return this.countRequestedProduct;
     }
 }
