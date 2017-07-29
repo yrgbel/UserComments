@@ -1,16 +1,22 @@
-import { Component, Output, EventEmitter } from "@angular/core";
-import { MyTableService } from "./my-table.service"
-import { Product } from "./Product";
+import { Component, Output, EventEmitter, Input, OnInit } from "@angular/core";
+import { MyTableService } from "../shared/my-table.service"
+import { Product } from "../shared/Product";
 
 @Component({
     moduleId : module.id,
     selector: "my-table",
     templateUrl: "my-table.component.html",
     styleUrls: ["my-table.component.css"],
-    inputs: ["countRows"],
-    providers: [MyTableService]
+    inputs: ["countRows"]
 })
-export class MyTableComponent {
+export class MyTableComponent implements OnInit {
+
+    private products: Product[] = [];
+
+        ngOnInit(): void {
+             this.refreshProducts();
+        }
+
     constructor(private myTableService: MyTableService)
     {  }
  getStyles()
@@ -25,7 +31,7 @@ export class MyTableComponent {
     delete : EventEmitter<number> = new EventEmitter<number>();
 
     // закрытое поле
-    private _countRows: number = this.GetAllProductCount;
+    private _countRows: number = this.getAllProductCount;
     // setter для получения значения закрытого поля _countRows 
     get countRows(): number
     {
@@ -34,24 +40,32 @@ export class MyTableComponent {
     // setter для установки значения закрытого поля _countRows 
     set countRows(value: number)
     {
-        let allCountRows = this.GetAllProductCount;
+        let allCountRows = this.getAllProductCount;
         this._countRows = value > allCountRows ? allCountRows : value;
     } 
 
-    get GetAllProductCount(): number
+    get getAllProductCount(): number
     {
         return this.myTableService.CountAllProducts;
     }
-
-    private GetProducts(): Array<Product>
+    
+    private getProducts(count?: number): Array<Product>
     {
-        return this.myTableService.GetProducts(this.countRows);
+        return this.myTableService.GetProducts(count);
+    }
+
+    @Output()
+    refreshProducts(count?: number): void
+    {
+        this.products = this.getProducts(count).slice();
+        this.countRows = this.getProducts(count).length;
     }
 
     private deleteProduct(id: number): void
     {
         this.myTableService.deleteById(id);
         this.delete.emit(id);
+        this.refreshProducts();
     }
 
     getCategories(): string[]

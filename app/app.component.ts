@@ -3,6 +3,8 @@
 // импорт декоратора Component из модуля @angular/core
 import { Component, ViewChild } from '@angular/core';
 import { MyTableComponent } from './my-table/my-table.component';
+import { AddProductComponent } from './add-product/add-product.component';
+import { MyTableService } from "./shared/my-table.service"
 
 // Применение декоратора Component для класса AppComponent
 // Декоратор используется для присвоения метаданных для класса AppComponent
@@ -12,15 +14,16 @@ import { MyTableComponent } from './my-table/my-table.component';
   moduleId: module.id,
   selector: 'my-app',                       // Селектор, который определяет какой элемент DOM дерева будет представлять компонент.
   templateUrl: 'app.component.html', // HTML разметка определяющая представление текущего компонента
-  inputs : ["myTable"]
+  inputs : ["myTable"],
+  providers: [MyTableService]
 })
 export class AppComponent {
    @ViewChild(MyTableComponent)
    private myTable: MyTableComponent;
 
-   get GetAllProductCount(): number
+   get getAllProductCount(): number
    {
-     return this.myTable.GetAllProductCount;
+     return this.myTable.getAllProductCount;
    }
 
    get catigories(): string[]
@@ -33,9 +36,20 @@ export class AppComponent {
       console.log("Row with ID=" + id + " has been deleted.");
    }
 
+   private refreshProducts(count?: number)
+   {
+      this.myTable.refreshProducts(count);
+   }
+
+   addRowHandler(): void{
+    this.refreshProducts();
+     console.log("Row with has been added.");
+   }
+
    onChangeCategory(category: string)
    {
       this.myTable.setProductCategory(category);
+      this.refreshProducts();
    }
 
  } // Класс определяющий поведение компонента

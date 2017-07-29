@@ -16,7 +16,7 @@
         <th>CATEGORY</th>
         <th></th> 
     </tr>
-    <tr *ngFor="let product of GetProducts()">
+    <tr *ngFor="let product of products">
         <td>{{product.id}}</td>
         <td>{{product.name}}</td>
         <td [style.color]="getColorFontExceedLimitPrice(product.price)">{{product.price}}</td>

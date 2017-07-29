@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // импорт декоратора Component из модуля @angular/core
 var core_1 = require("@angular/core");
 var my_table_component_1 = require("./my-table/my-table.component");
+var my_table_service_1 = require("./shared/my-table.service");
 // Применение декоратора Component для класса AppComponent
 // Декоратор используется для присвоения метаданных для класса AppComponent
 // Для использования относительных путей, необходимо добавить свойство moduleId и установить значение для свойства module.id
@@ -20,9 +21,9 @@ var my_table_component_1 = require("./my-table/my-table.component");
 var AppComponent = (function () {
     function AppComponent() {
     }
-    Object.defineProperty(AppComponent.prototype, "GetAllProductCount", {
+    Object.defineProperty(AppComponent.prototype, "getAllProductCount", {
         get: function () {
-            return this.myTable.GetAllProductCount;
+            return this.myTable.getAllProductCount;
         },
         enumerable: true,
         configurable: true
@@ -37,8 +38,16 @@ var AppComponent = (function () {
     AppComponent.prototype.deleteRowHandler = function (id) {
         console.log("Row with ID=" + id + " has been deleted.");
     };
+    AppComponent.prototype.refreshProducts = function (count) {
+        this.myTable.refreshProducts(count);
+    };
+    AppComponent.prototype.addRowHandler = function () {
+        this.refreshProducts();
+        console.log("Row with has been added.");
+    };
     AppComponent.prototype.onChangeCategory = function (category) {
         this.myTable.setProductCategory(category);
+        this.refreshProducts();
     };
     return AppComponent;
 }()); // Класс определяющий поведение компонента
@@ -51,7 +60,8 @@ AppComponent = __decorate([
         moduleId: module.id,
         selector: 'my-app',
         templateUrl: 'app.component.html',
-        inputs: ["myTable"]
+        inputs: ["myTable"],
+        providers: [my_table_service_1.MyTableService]
     })
 ], AppComponent);
 exports.AppComponent = AppComponent;

@@ -7,6 +7,7 @@ import { FormsModule} from '@angular/forms';
 
 import { AppComponent }   from './app.component';
 import { MyTableComponent } from './my-table/my-table.component';
+import { AddProductComponent } from './add-product/add-product.component';
 
 // @NgModule - декоратор, который определяет данные для создаваемого модуля.
 // Для того чтобы приложение могло выполняться в браузере, текущий модуль (корневой модуль)
@@ -15,7 +16,7 @@ import { MyTableComponent } from './my-table/my-table.component';
 // а также добавить общие директивы такие как ngIf и ngFor
 @NgModule({
   imports:      [ BrowserModule, FormsModule ],
-  declarations: [ AppComponent, MyTableComponent ], // корневой компонент данного приложения
+  declarations: [ AppComponent, MyTableComponent, AddProductComponent ], // корневой компонент данного приложения
   bootstrap:    [ AppComponent ]  // компонент с которого начинается отображение приложения
 })
 
