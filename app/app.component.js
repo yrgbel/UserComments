@@ -11,9 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // импорт декоратора Component из модуля @angular/core
+require("./rx-js.operators");
 var core_1 = require("@angular/core");
 var my_table_component_1 = require("./my-table/my-table.component");
-var my_table_service_1 = require("./shared/my-table.service");
+var comment_service_1 = require("./shared/comment.service");
 // Применение декоратора Component для класса AppComponent
 // Декоратор используется для присвоения метаданных для класса AppComponent
 // Для использования относительных путей, необходимо добавить свойство moduleId и установить значение для свойства module.id
@@ -21,33 +22,12 @@ var my_table_service_1 = require("./shared/my-table.service");
 var AppComponent = (function () {
     function AppComponent() {
     }
-    Object.defineProperty(AppComponent.prototype, "getAllProductCount", {
-        get: function () {
-            return this.myTable.getAllProductCount;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AppComponent.prototype, "catigories", {
-        get: function () {
-            return this.myTable.getCategories();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    AppComponent.prototype.deleteRowHandler = function (id) {
-        console.log("Row with ID=" + id + " has been deleted.");
-    };
-    AppComponent.prototype.refreshProducts = function (count) {
-        this.myTable.refreshProducts(count);
-    };
     AppComponent.prototype.addRowHandler = function () {
-        this.refreshProducts();
+        this.myTable.refreshComments();
         console.log("Row with has been added.");
     };
-    AppComponent.prototype.onChangeCategory = function (category) {
-        this.myTable.setProductCategory(category);
-        this.refreshProducts();
+    AppComponent.prototype.deleteRowHandler = function (id) {
+        console.log("Row with ID=" + id + " has been deleted.");
     };
     return AppComponent;
 }()); // Класс определяющий поведение компонента
@@ -61,7 +41,7 @@ AppComponent = __decorate([
         selector: 'my-app',
         templateUrl: 'app.component.html',
         inputs: ["myTable"],
-        providers: [my_table_service_1.MyTableService]
+        providers: [comment_service_1.CommentService]
     })
 ], AppComponent);
 exports.AppComponent = AppComponent;

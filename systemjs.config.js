@@ -20,7 +20,9 @@
       // other libraries
       'rxjs':                      'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api',
-      'linq-es2015':'npm:linq-es2015/lib'
+      'linq-es2015':'npm:linq-es2015/lib',
+      'moment': 'npm:moment',
+      'ng2-bootstrap': 'npm:ng2-bootstrap'
     },
     // Указываем как выполнять загрузку файлов, когда отсутствует имя файла или его расширение
     packages: {
@@ -36,9 +38,14 @@
         defaultExtension: 'js'
       },
       'linq-es2015': {
-                main: './linq.js',
-                defaultExtension: 'js'
-            }
+        main: './linq.js',
+        defaultExtension: 'js'
+      },
+      "ng2-bootstrap": {
+        main: "bundles/ngx-bootstrap.umd.js",
+        defaultExtension: "js"
+      },
+      "moment": { main: "moment.js", defaultExtension: "js" },
     }
   });
 })(this);

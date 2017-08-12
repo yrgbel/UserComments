@@ -1,0 +1,45 @@
+<div class="container" *ngIf="commentAddForm">
+    <p>Input all fields for new Comment:</p>
+    <form [formGroup]="commentAddForm" (ngSubmit)="onSubmit(commentAddForm)">
+        <div class="form-group">
+            <label for="username">USERNAME</label>
+            <input [focus]="focusTrigger" type="text" formControlName="username"
+             class="form-control form-comment" id="username" />
+
+            <div *ngIf="formErrors.username" class="alert alert-danger">
+                {{ formErrors.username }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="commentText">TEXT COMMENT</label>
+            <input type="text" formControlName="commentText"
+             class="form-control form-comment" id="commentText" />
+
+            <div *ngIf="formErrors.commentText" class="alert alert-danger">
+                {{ formErrors.commentText }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dateShow">DATE COMMENT</label>
+            <div class="input-group">
+ <input (click)="showPopup()" type="text" readonly [value]="changedDateView"
+     class="form-control form-comment-datepicker" id="dateShow" />
+   <span class="input-group-btn form-comment-datepicker"> <button (click)="showPopup()"
+    type="button" class="btn btn-default glyphicon glyphicon-calendar"
+     title="Calendar"></button></span>
+            </div>
+   
+  <div *ngIf="formErrors.date" class="alert alert-danger">
+                {{ formErrors.date }}
+            </div>
+              <div [style.display]="showDatepicker ? 'block' : 'none'"
+               class="datepicker-element">
+    <datepicker [showWeeks]="false" formControlName="date" 
+     [minDate]="minDate" [dateDisabled]="disabledDate"
+      [onlyCurrentMonth]="true" (selectionDone)="onSelectionDone($event)">
+      </datepicker>
+</div>
+        </div>      
+        <button type="submit" class="btn btn-default" [disabled]="commentAddForm.invalid">Add</button>
+    </form>
+</div>

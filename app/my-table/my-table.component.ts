@@ -1,90 +1,63 @@
 import { Component, Output, EventEmitter, Input, OnInit } from "@angular/core";
-import { MyTableService } from "../shared/my-table.service"
-import { Product } from "../shared/Product";
+import { CommentService } from "../shared/comment.service"
+import { UserComment } from "../shared/user-comment";
 
 @Component({
-    moduleId : module.id,
+    moduleId: module.id,
     selector: "my-table",
     templateUrl: "my-table.component.html",
-    styleUrls: ["my-table.component.css"],
-    inputs: ["countRows"]
+    styleUrls: ["my-table.component.css"]
 })
 export class MyTableComponent implements OnInit {
 
-    private products: Product[] = [];
+    private comments: UserComment[] = [];
 
-        ngOnInit(): void {
-             this.refreshProducts();
-        }
+    ngOnInit(): void {
+        this.refreshComments();
+    }
 
-    constructor(private myTableService: MyTableService)
-    {  }
- getStyles()
-  {
-    let styles = {
-        "background-color" : "greenyellow",
-        "display" : "inline"
-    };
-    return styles;
-  }
+    constructor(private commentService: CommentService)
+    { }
+
+    getStyles() {
+        let styles = {
+            "background-color": "greenyellow",
+            "display": "inline"
+        };
+        return styles;
+    }
     @Output()
-    delete : EventEmitter<number> = new EventEmitter<number>();
+    delete: EventEmitter<string> = new EventEmitter<string>();
 
     // закрытое поле
-    private _countRows: number = this.getAllProductCount;
-    // setter для получения значения закрытого поля _countRows 
-    get countRows(): number
-    {
-        return this._countRows;
-    }
-    // setter для установки значения закрытого поля _countRows 
-    set countRows(value: number)
-    {
-        let allCountRows = this.getAllProductCount;
-        this._countRows = value > allCountRows ? allCountRows : value;
-    } 
+    @Output()
+    private countRows: number = 0;
 
-    get getAllProductCount(): number
-    {
-        return this.myTableService.CountAllProducts;
+    private getCurrentCountComments(): number {
+        return this.comments.length;
     }
-    
-    private getProducts(count?: number): Array<Product>
-    {
-        return this.myTableService.GetProducts(count);
+
+    private getComments() {
+        this.commentService
+            .getComments()
+            .subscribe(result => this.comments = result);
     }
 
     @Output()
-    refreshProducts(count?: number): void
-    {
-        this.products = this.getProducts(count).slice();
-        this.countRows = this.getProducts(count).length;
+    refreshComments(): void {
+        this.getComments();
+        this.countRows = this.comments.length;
     }
 
-    private deleteProduct(id: number): void
-    {
-        this.myTableService.deleteById(id);
-        this.delete.emit(id);
-        this.refreshProducts();
+    private deleteComment(comment: UserComment): void {
+        this.commentService.deleteComment(comment)
+            .subscribe(() => {
+                this.delete.emit(comment.id);
+                this.refreshComments();
+            });
     }
 
-    getCategories(): string[]
-    {
-        return this.myTableService.getUniqueProductCategories();
-    }
-
-    setProductCategory(category: string): void
-    {
-        this.myTableService.setProductCategory(category);
-    }
-    
-    private getCurrentCountProduct(): number
-    {
-        return this.myTableService.CountRequestedProduct;
-    }
-
-    private getColorFontExceedLimitPrice(currentPrice: number, limitPrice: number = 500)
-    {
-        return currentPrice > limitPrice ? 'red' : '';
+    private getColorFontExceedLimitDate(date: Date, limitDate: Date = new Date()) {
+        return date > limitDate ? 'red' : '';
     }
 }

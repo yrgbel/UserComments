@@ -1,9 +1,3 @@
-<label for="setShowCountRows">Show count rows:</label>
-<input id="setShowCountRows" type="number" (change)="refreshProducts($event.target.value)"  [(ngModel)]="myTable.countRows" min="1" max="{{getAllProductCount}}" value="{{getAllProductCount}}"/>
-<h1>The table of products:</h1>
-<label>Choose a product category:</label>
-<select (change)="onChangeCategory($event.target.value)">
-    <option *ngFor="let category of catigories" value="{{category}}">{{category}}</option>
-</select>
+<h1>The table of user comments:</h1>
 <my-table (delete)="deleteRowHandler($event)"></my-table>
-<add-product (addProduct)="addRowHandler()"></add-product>
+<add-comment (addComment)="addRowHandler()"></add-comment>

@@ -1,0 +1,21 @@
+.form-comment
+{
+    width: 400px;
+}
+
+.form-comment-datepicker
+{
+    width: 360px;
+}
+
+.datepicker-element
+{
+    display:inline-block;
+    z-index: 10;
+    min-height: 290px;
+    width: 400px;
+}
+table[aria-activedescendant='activeDateId']
+{
+    margin: auto !important;
+}

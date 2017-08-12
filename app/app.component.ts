@@ -1,11 +1,11 @@
 // Определение компонента app.component
 
 // импорт декоратора Component из модуля @angular/core
+import "./rx-js.operators";
 import { Component, ViewChild } from '@angular/core';
 import { MyTableComponent } from './my-table/my-table.component';
-import { AddProductComponent } from './add-product/add-product.component';
-import { MyTableService } from "./shared/my-table.service"
-
+import { AddCommentComponent } from './add-comment/add-comment.component';
+import { CommentService } from "./shared/comment.service";
 // Применение декоратора Component для класса AppComponent
 // Декоратор используется для присвоения метаданных для класса AppComponent
 // Для использования относительных путей, необходимо добавить свойство moduleId и установить значение для свойства module.id
@@ -14,42 +14,20 @@ import { MyTableService } from "./shared/my-table.service"
   moduleId: module.id,
   selector: 'my-app',                       // Селектор, который определяет какой элемент DOM дерева будет представлять компонент.
   templateUrl: 'app.component.html', // HTML разметка определяющая представление текущего компонента
-  inputs : ["myTable"],
-  providers: [MyTableService]
+  inputs: ["myTable"],
+  providers:    [ CommentService ]
 })
 export class AppComponent {
-   @ViewChild(MyTableComponent)
-   private myTable: MyTableComponent;
+  @ViewChild(MyTableComponent)
+  private myTable: MyTableComponent;
 
-   get getAllProductCount(): number
-   {
-     return this.myTable.getAllProductCount;
-   }
+  addRowHandler(): void {
+    this.myTable.refreshComments();
+    console.log("Row with has been added.");
+  }
 
-   get catigories(): string[]
-   {
-     return this.myTable.getCategories();
-   }
+  deleteRowHandler(id: number): void {
+    console.log("Row with ID=" + id + " has been deleted.");
+  }
 
-   deleteRowHandler(id: number): void
-   {
-      console.log("Row with ID=" + id + " has been deleted.");
-   }
-
-   private refreshProducts(count?: number)
-   {
-      this.myTable.refreshProducts(count);
-   }
-
-   addRowHandler(): void{
-    this.refreshProducts();
-     console.log("Row with has been added.");
-   }
-
-   onChangeCategory(category: string)
-   {
-      this.myTable.setProductCategory(category);
-      this.refreshProducts();
-   }
-
- } // Класс определяющий поведение компонента
+} // Класс определяющий поведение компонента

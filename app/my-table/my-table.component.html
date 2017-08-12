@@ -1,31 +1,22 @@
 <table class="table table-striped table-bordered table-hover">
-    <!-- 
-        *ngFor="let phrase of PhraseList"
-        ngFor - директива для повторения HTML элементов 
-        let phrase of PhraseList - создание переменной phase в которую на каждой итерации будет устанавливаться значение из массива PhraseList
-
-        (click)="onSelect(phrase)"
-        (click) - определение события, на которое необходимо установить обработчик.
-        onSelect(phrase) - обработчик события, который сработает при событии onclick элемента li
-    -->
-    <caption>PRODUCTS</caption>
+    <caption>COMMENTS</caption>
     <tr>
         <th>ID</th>
-        <th>NAME</th>
-        <th>PRICE</th>
-        <th>CATEGORY</th>
+        <th>USERNAME</th>
+        <th>COMMENT TEXT</th>
+        <th>DATE</th>
         <th></th> 
     </tr>
-    <tr *ngFor="let product of products">
-        <td>{{product.id}}</td>
-        <td>{{product.name}}</td>
-        <td [style.color]="getColorFontExceedLimitPrice(product.price)">{{product.price}}</td>
-        <td>{{product.category}}</td>
-        <td><span (click)="deleteProduct(product.id)" role="button" class="glyphicon glyphicon-trash" title="Удалить"></span></td>
+    <tr *ngFor="let comment of comments">
+        <td>{{comment.id}}</td>
+        <td>{{comment.username}}</td>
+        <td>{{comment.commentText}}</td>
+        <td [style.color]="getColorFontExceedLimitDate(comment.date)">{{comment.date}}</td>
+        <td><span (click)="deleteComment(comment)" role="button" class="glyphicon glyphicon-trash" title="Удалить"></span></td>
     </tr>
 </table>
 
 <!--*ngIf="selectedPhraseLanguage" если выражение хранит значение true элемент будет добавлен в DOM-->
 <p [ngStyle]="getStyles()">
-    Count rows in table: {{getCurrentCountProduct()}}
+    Count rows in table: {{getCurrentCountComments()}}
 </p>

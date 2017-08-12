@@ -10,17 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var my_table_service_1 = require("../shared/my-table.service");
+var comment_service_1 = require("../shared/comment.service");
 var MyTableComponent = (function () {
-    function MyTableComponent(myTableService) {
-        this.myTableService = myTableService;
-        this.products = [];
+    function MyTableComponent(commentService) {
+        this.commentService = commentService;
+        this.comments = [];
         this.delete = new core_1.EventEmitter();
         // закрытое поле
-        this._countRows = this.getAllProductCount;
+        this.countRows = 0;
     }
     MyTableComponent.prototype.ngOnInit = function () {
-        this.refreshProducts();
+        this.refreshComments();
     };
     MyTableComponent.prototype.getStyles = function () {
         var styles = {
@@ -29,50 +29,30 @@ var MyTableComponent = (function () {
         };
         return styles;
     };
-    Object.defineProperty(MyTableComponent.prototype, "countRows", {
-        // setter для получения значения закрытого поля _countRows 
-        get: function () {
-            return this._countRows;
-        },
-        // setter для установки значения закрытого поля _countRows 
-        set: function (value) {
-            var allCountRows = this.getAllProductCount;
-            this._countRows = value > allCountRows ? allCountRows : value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MyTableComponent.prototype, "getAllProductCount", {
-        get: function () {
-            return this.myTableService.CountAllProducts;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MyTableComponent.prototype.getProducts = function (count) {
-        return this.myTableService.GetProducts(count);
+    MyTableComponent.prototype.getCurrentCountComments = function () {
+        return this.comments.length;
     };
-    MyTableComponent.prototype.refreshProducts = function (count) {
-        this.products = this.getProducts(count).slice();
-        this.countRows = this.getProducts(count).length;
+    MyTableComponent.prototype.getComments = function () {
+        var _this = this;
+        this.commentService
+            .getComments()
+            .subscribe(function (result) { return _this.comments = result; });
     };
-    MyTableComponent.prototype.deleteProduct = function (id) {
-        this.myTableService.deleteById(id);
-        this.delete.emit(id);
-        this.refreshProducts();
+    MyTableComponent.prototype.refreshComments = function () {
+        this.getComments();
+        this.countRows = this.comments.length;
     };
-    MyTableComponent.prototype.getCategories = function () {
-        return this.myTableService.getUniqueProductCategories();
+    MyTableComponent.prototype.deleteComment = function (comment) {
+        var _this = this;
+        this.commentService.deleteComment(comment)
+            .subscribe(function () {
+            _this.delete.emit(comment.id);
+            _this.refreshComments();
+        });
     };
-    MyTableComponent.prototype.setProductCategory = function (category) {
-        this.myTableService.setProductCategory(category);
-    };
-    MyTableComponent.prototype.getCurrentCountProduct = function () {
-        return this.myTableService.CountRequestedProduct;
-    };
-    MyTableComponent.prototype.getColorFontExceedLimitPrice = function (currentPrice, limitPrice) {
-        if (limitPrice === void 0) { limitPrice = 500; }
-        return currentPrice > limitPrice ? 'red' : '';
+    MyTableComponent.prototype.getColorFontExceedLimitDate = function (date, limitDate) {
+        if (limitDate === void 0) { limitDate = new Date(); }
+        return date > limitDate ? 'red' : '';
     };
     return MyTableComponent;
 }());
@@ -82,19 +62,22 @@ __decorate([
 ], MyTableComponent.prototype, "delete", void 0);
 __decorate([
     core_1.Output(),
+    __metadata("design:type", Number)
+], MyTableComponent.prototype, "countRows", void 0);
+__decorate([
+    core_1.Output(),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], MyTableComponent.prototype, "refreshProducts", null);
+], MyTableComponent.prototype, "refreshComments", null);
 MyTableComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: "my-table",
         templateUrl: "my-table.component.html",
-        styleUrls: ["my-table.component.css"],
-        inputs: ["countRows"]
+        styleUrls: ["my-table.component.css"]
     }),
-    __metadata("design:paramtypes", [my_table_service_1.MyTableService])
+    __metadata("design:paramtypes", [comment_service_1.CommentService])
 ], MyTableComponent);
 exports.MyTableComponent = MyTableComponent;
 //# sourceMappingURL=my-table.component.js.map

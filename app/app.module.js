@@ -11,9 +11,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var forms_1 = require("@angular/forms");
+var http_1 = require("@angular/http");
 var app_component_1 = require("./app.component");
 var my_table_component_1 = require("./my-table/my-table.component");
-var add_product_component_1 = require("./add-product/add-product.component");
+var add_comment_component_1 = require("./add-comment/add-comment.component");
+var focus_directive_1 = require("./focus.directive");
+var ng2_bootstrap_1 = require("ng2-bootstrap");
 // @NgModule - декоратор, который определяет данные для создаваемого модуля.
 // Для того чтобы приложение могло выполняться в браузере, текущий модуль (корневой модуль)
 // должен выполнить импорт модуля BrowserModule взятого из @angular/platform-browser 
@@ -26,8 +29,15 @@ var AppModule = (function () {
 }());
 AppModule = __decorate([
     core_1.NgModule({
-        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, forms_1.ReactiveFormsModule],
-        declarations: [app_component_1.AppComponent, my_table_component_1.MyTableComponent, add_product_component_1.AddProductComponent],
+        imports: [platform_browser_1.BrowserModule,
+            ng2_bootstrap_1.DatepickerModule.forRoot(),
+            forms_1.FormsModule,
+            forms_1.ReactiveFormsModule,
+            http_1.HttpModule],
+        declarations: [app_component_1.AppComponent,
+            my_table_component_1.MyTableComponent,
+            add_comment_component_1.AddCommentComponent,
+            focus_directive_1.FocusDirective],
         bootstrap: [app_component_1.AppComponent] // компонент с которого начинается отображение приложения
     })
 ], AppModule);
